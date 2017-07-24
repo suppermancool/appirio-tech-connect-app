@@ -18,7 +18,7 @@ class SpecFeatureQuestion extends Component {
           <FlattenedFeatureList addedFeatures={ value } />
         </div>
         <div className="add-edit-features__header">
-          <button type="button" onClick={ showFeaturesDialog } className="tc-btn-secondary tc-btn-sm">Add / Edit Features</button>
+          <button type="button" onClick={ showFeaturesDialog } className="tc-btn tc-btn-secondary tc-btn-sm">Add / Edit Features</button>
         </div>
       </div>
     )
