@@ -10,7 +10,6 @@ $status-height: 20px;
     min-width: 4 * $base-unit;
     width: 4 * $base-unit;
     height: 4 * $base-unit;
-    // top: 3px;
 
     i {
       display: block;
@@ -36,7 +35,6 @@ $status-height: 20px;
 
   .status-header {
     display: flex;
-    // position: absolute;
     height: $status-height;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -56,18 +54,12 @@ $status-height: 20px;
         &::after {
         }
       }
-
       .caret {
-        // content: '';
-        // z-index: 3;
         display: inline-block;
         width: 9px;
         height: 20px;
         position: relative;
-        margin-left: 5px;
-        // right: 5px;
-        // top: 8px;
-        background-size: 9px 4px;
+        margin:0 0 0 5px;
 
         .Icon {
           width: 100%;
@@ -147,10 +139,15 @@ $status-height: 20px;
         margin-right: 10px;
       }
 
+      svg.active-status-icon + span {
+        line-height: 25px;
+      }
+
       .status-label {
         color: $tc-gray-80;
         padding-right: 0px;
         font-size: 13px;
+        line-height: 29px;
       }
     }
   }

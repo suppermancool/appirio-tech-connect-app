@@ -10,7 +10,6 @@
   padding: 20px 86px;
   
   .text-img{
-    background-size: 100% 100%;
     position: absolute;
     display:block;
     width: 640px;
@@ -99,7 +98,6 @@
     }
   }
   .robot{
-    background-size: 238px 281px;
     position: absolute;
     width: 238px;
     height: 281px;
@@ -109,7 +107,6 @@
     z-index:2;
   }
   .shadow{
-    background-size: 960px 11px;
     position: absolute;
     width: 960px;
     z-index:1;
