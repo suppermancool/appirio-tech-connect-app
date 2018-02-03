@@ -11,6 +11,8 @@ import {
   PROJECT_STATUS_CANCELLED
 } from '../../config/constants'
 import CarretDownNormal9px from '../../assets/icons/arrow-9px-carret-down-normal.svg'
+import IconCarretDownActive from '../../assets/icons/arrow-6px-carret-down-active.svg'
+import IconCheckDark from '../../assets/icons/check-dark.svg'
 
 
 const hocStatusDropdown = (CompositeComponent) => {
@@ -49,7 +51,10 @@ const hocStatusDropdown = (CompositeComponent) => {
           </div>
           { isOpen && canEdit &&
             <div className={cn('status-dropdown', { 'dropdown-up': this.shouldDropdownUp() })}>
-              <div className="status-header">Project Status</div>
+              <div className="status-header">
+                Project Status
+                <IconCarretDownActive className="icon-carret-down-active" />
+              </div>
               <ul>
                 {
                   PROJECT_STATUS.sort((a, b) => a.dropDownOrder > b.dropDownOrder).map((item) =>
@@ -61,8 +66,10 @@ const hocStatusDropdown = (CompositeComponent) => {
                           onItemSelect(item.value, e)
                         }}
                       >
-                        <ProjectStatus status={item} showText />
+                      {item.value === status? <IconCheckDark className="icon-check-dark"/> :''}
+                      <ProjectStatus  status={item} showText />
                       </a>
+                      {item.value === 'completed' ? <div className="divider" /> : ''}
                     </li>
                   )
                 }

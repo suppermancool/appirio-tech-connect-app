@@ -110,11 +110,15 @@ $status-height: 20px;
       @include roboto-medium;
       font-size: $tc-label-md;
       text-align: left;
-      color: $tc-black;
+      color: #0681ff;
       line-height: 30px;
       padding-left: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       white-space: nowrap;
+
+      svg {
+        margin: 12px 5px;
+      }
     }
 
     a.status-option {
@@ -123,15 +127,25 @@ $status-height: 20px;
       font-size: $tc-label-md;
       text-align: left;
       line-height: 30px;
-      padding: 5px 16px 5px 2px;
+      padding: 3px 16px 5px 2px;
       white-space: nowrap;
+      margin: 0 10px;
 
       &:hover {
         background: $tc-dark-blue-10;
       }
 
       &.active {
-        background: $tc-dark-blue-10;
+        svg {
+          margin: 7px -8px;
+        }
+        div {
+          margin: 0 8px;
+        }
+        .status-label {
+          color: #000000;
+          font-weight: bolder;
+        }
       }
 
       svg.active-status-icon {
@@ -151,4 +165,14 @@ $status-height: 20px;
       }
     }
   }
+}
+
+div.divider {
+  width: 110px;
+  border-bottom: 1px solid #dadada;
+  display: block;
+  -webkit-margin-before: 0.9em;
+  -webkit-margin-after: 0.5em;
+  -webkit-margin-start: auto;
+  -webkit-margin-end: auto;
 }
