@@ -45,15 +45,15 @@ workflows:
     jobs:
       - test
       - deployDev:
-        requires:
-          - test
-        filters:
-          branches:
-            only: ciUpgrade
+          requires:
+            - test
+          filters:
+            branches:
+              only: ciUpgrade
       - deployProd:
-        requires:
-          - test
-        filters:
-          branches:
-            only: master
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
             
