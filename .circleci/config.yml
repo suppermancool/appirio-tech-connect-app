@@ -49,7 +49,7 @@ workflows:
           - test
           filters:
             branches:
-              only: dev
+              only: ciUpgrade
       - deployProd:
         requires:
           - test
