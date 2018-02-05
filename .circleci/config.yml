@@ -47,13 +47,13 @@ workflows:
       - deployDev:
         requires:
           - test
-          filters:
-            branches:
-              only: ciUpgrade
+        filters:
+          branches:
+            only: ciUpgrade
       - deployProd:
         requires:
           - test
-          filters:
-            branches:
-              only: master
+        filters:
+          branches:
+            only: master
             
