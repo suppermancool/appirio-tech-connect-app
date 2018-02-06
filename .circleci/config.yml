@@ -15,8 +15,9 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run build
-      - save_cache:
-          key: test-dist-{{ checksum "package-lock.json" }}
+       - persist_to_workspace:
+          root: .
+          # Must be relative path from root
           paths:
             - dist
 
@@ -25,18 +26,18 @@ jobs:
     docker:
       - image: cibuilds/aws
     steps:
+      - attach_workspace:
+          at: ./workspace
       - checkout
-      - restore_cache:
-          key: test-dist-{{ checksum "package-lock.json" }}
       - run: ./deploy.sh DEV no-cache
 
   deployProd:
     docker:
       - image: cibuilds/aws
     steps:
+      - attach_workspace:
+          at: ./workspace
       - checkout
-      - restore_cache:
-          key: test-dist-{{ checksum "package-lock.json" }}
       - run: ./deploy.sh PROD
 
 workflows:
