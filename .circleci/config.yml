@@ -25,18 +25,18 @@ jobs:
     docker:
       - image: cibuilds/aws
     steps:
+      - checkout
       - attach_workspace:
           at: ./workspace
-      - checkout
       - run: ./deploy.sh DEV no-cache
 
   deployProd:
     docker:
       - image: cibuilds/aws
     steps:
+      - checkout
       - attach_workspace:
           at: ./workspace
-      - checkout
       - run: ./deploy.sh PROD
 
 workflows:
