@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import update from 'react-addons-update'
 import ReactJson from 'react-json-view'
 import FormsyForm from 'appirio-tech-react-components/components/Formsy'
+const Formsy = FormsyForm.Formsy
 import SelectDropdown from 'appirio-tech-react-components/components/SelectDropdown/SelectDropdown'
 import Sticky from 'react-stickynode'
 import SpecSection from '../../../projects/detail/components/SpecSection'
@@ -113,11 +114,11 @@ class FormBuilderContainerView extends React.Component {
             { this.state.template && (
               <div className="ProjectWizard">
                 <div className="FillProjectDetails">
-                  <FormsyForm.Form
+                  <Formsy.Form
                     ref="form"
                   >
                     {this.state.template.template.questions.map(this.renderSection)}
-                  </FormsyForm.Form>
+                  </Formsy.Form>
                 </div>
               </div>
             )}
