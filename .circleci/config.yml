@@ -71,7 +71,7 @@ workflows:
             - test
           filters:
             branches:
-              only: ['dev']
+              only: ['dev', 'feature/template-manager']
       - deployTest02:
           requires:
             - test
