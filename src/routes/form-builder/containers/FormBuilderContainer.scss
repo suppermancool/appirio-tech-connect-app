@@ -1,0 +1,27 @@
+// this is to include tc styles in the output library
+@import '~tc-ui/src/styles/tc-includes';
+
+:global {
+  .form-builder-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    // max-width: 1150px;
+    min-width: 960px;
+    padding: 30px 20px 0;
+
+    > .content {
+      flex: 1;
+      margin-right: 30px;
+      max-width: 340px;
+    }
+
+    > .filters {
+      flex: 1;
+      // max-width: 740px;
+      background-color: $tc-white;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  }
+}

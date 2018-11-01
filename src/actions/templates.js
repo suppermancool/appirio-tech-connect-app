@@ -12,3 +12,21 @@ export function loadProjectsMetadata() {
     })
   }
 }
+
+export function getProductTemplate() {
+  return (dispatch) => {
+    return dispatch({
+      type: LOAD_PROJECTS_METADATA,
+      payload: getProjectsMetadata()
+    })
+  }
+}
+
+export function saveProductTemplate() {
+  return (dispatch) => {
+    return dispatch({
+      type: LOAD_PROJECTS_METADATA,
+      payload: getProjectsMetadata()
+    })
+  }
+}
