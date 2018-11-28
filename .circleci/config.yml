@@ -81,7 +81,7 @@ workflows:
             - test
           filters:
             branches:
-              only: ['dev', 'dev-msinteg']
+              only: ['dev', 'dev-msinteg', 'feature/template-manager']
       - deployTest02:
           requires:
             - test
