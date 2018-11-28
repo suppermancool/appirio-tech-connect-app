@@ -7,9 +7,21 @@ import FormsyForm from 'appirio-tech-react-components/components/Formsy'
 const TCFormFields = FormsyForm.Fields
 const Formsy = FormsyForm.Formsy
 import ProfileSettingsAvatar from './ProfileSettingsAvatar'
+import SelectDropdown from '../../../../../components/SelectDropdown/SelectDropdown'
+import { COUNTRIES } from '../../../constants/settings.js'
+
 import './ProfileSettingsForm.scss'
 
 const companySizeRadioOptions = ['1-15', '16-50', '51-500', '500+']
+
+const countries = COUNTRIES.map(country => ({
+  title: country.name,
+  value: country.name,
+}))
+countries.unshift({
+  title: '- Select country -',
+  value: '',
+})
 
 class ProfileSettingsForm extends Component {
   constructor(props) {
@@ -28,7 +40,13 @@ class ProfileSettingsForm extends Component {
     let validations = null
     if (name === 'businessPhone') {
       validations = {
-        matchRegexp: /^([+]?\d{1,2}[.-\s]?)?(\d{3}[.-]?){2}\d{4}$/
+        // use same regexp as on server side
+        matchRegexp: /^\+(?:[0-9] ?){6,14}[0-9]$/
+      }
+    } else if (name === 'firstNLastName') {
+      validations = {
+        // should have first and last name
+        matchRegexp: /([^\s])\s+([^\s]+)/
       }
     }
     return (
@@ -52,11 +70,11 @@ class ProfileSettingsForm extends Component {
     // as form could update not all fields, thus they won't be included in `data`
     // for example user avatar is not included in `data` thus will be removed if don't use 
     // this.props.values.settings as a base
-    const updatedDate = {
+    const updatedData = {
       ...this.props.values.settings,
       ...data,
     }
-    this.props.saveSettings(updatedDate)
+    this.props.saveSettings(updatedData)
   }
 
   onValid() {
@@ -106,7 +124,7 @@ class ProfileSettingsForm extends Component {
             options={companySizeRadioOptions.map((label) => ({option: label, label, value: label}))}
             required
           />
-        </div>
+        </div>        
         <div className="section-heading">Business address</div>
         {this.getField('Address', 'address')}
         {this.getField('City', 'city')}
@@ -127,7 +145,18 @@ class ProfileSettingsForm extends Component {
             />
           </div>
         </div>
-        {this.getField('Country', 'country')}
+        <div className="field">
+          <div className="label">Country</div>
+          <div className="input-field">
+            <SelectDropdown
+              name="country"
+              value={this.props.values.settings.country ? this.props.values.settings.country : ''}
+              theme="default"
+              options={countries}
+              required
+            />
+          </div>
+        </div>
         <div className="controls">
           <button
             type="submit"

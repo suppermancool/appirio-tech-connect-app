@@ -473,6 +473,8 @@ export const TC_CDN_URL = process.env.NODE_ENV === 'development' ? 'https://d1aa
 
 export const PROJECT_NAME_MAX_LENGTH = 255
 export const PROJECT_REF_CODE_MAX_LENGTH = 32
+export const BUSINESS_UNIT_MAX_LENGTH = 20
+export const COST_CENTRE_MAX_LENGTH = 20
 
 export const PROJECT_FEED_TYPE_PRIMARY  = 'PRIMARY'
 export const PROJECT_FEED_TYPE_MESSAGES = 'MESSAGES'
@@ -564,7 +566,6 @@ export const DATE_TO_USER_FIELD_MAP = {
 
 // Notifications
 export const REFRESH_NOTIFICATIONS_INTERVAL = 1000 * 60 * 1 // 1 minute interval
-export const REFRESH_UNREAD_UPDATE_INTERVAL = 1000 * 10 * 1 // 10 second interval
 export const NOTIFICATIONS_DROPDOWN_PER_SOURCE = 5
 export const NOTIFICATIONS_NEW_PER_SOURCE = 10
 
