@@ -36,25 +36,34 @@ SpecQuestionList.defaultProps = {
   additionalClass: ''
 }
 
-const SpecQuestionListItem = ({icon, title, type, description, children, required, hideDescription}) => (
-  <div className="spec-question-list-item">
+const SpecQuestionListItem = ({icon, title, type, additionalClass, description, children, required, hideDescription}) => {
+  let shouldShowTitle = true
+  if (additionalClass.includes('spacing-gray-input') && (type === 'textinput')) {
+    shouldShowTitle = false
+  }
+  return (<div className={'spec-question-list-item ' + additionalClass }>
     {icon && <div className="icon-col">{icon}</div>}
     <div className="content-col">
-      <h5>{title}{required ? <span>*</span> : null}</h5>
+      {shouldShowTitle && (<h5>{title}{required ? <span>*</span> : null}</h5>)}
       {children && <div className="child-component">{children}</div>}
       {!hideDescription && <p className={cn({bigger: !icon})}>{description}</p>}
       {(type === 'textinput') &&
       <div className="refcode-desc">{required ? 'Required' : 'Optional'}</div>}
     </div>
-  </div>
-)
+  </div>)
+}
 
 SpecQuestionListItem.propTypes = {
   icon: PropTypes.any,
   title: PropTypes.any.isRequired,
   description: PropTypes.any,
   children: PropTypes.any,
-  type: PropTypes.string
+  type: PropTypes.string,
+  additionalClass: PropTypes.string
+}
+
+SpecQuestionListItem.defaultProps = {
+  additionalClass: '',
 }
 
 SpecQuestionList.Item = SpecQuestionListItem

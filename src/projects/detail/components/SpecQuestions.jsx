@@ -71,6 +71,7 @@ const SpecQuestions = ({questions, layout, additionalClass, project, dirtyProjec
       })
     }
 
+    let additionalItemClass = ''
     let spacing = _.get(q, 'spacing', '')
     if (spacing) {
       spacing = ('spacing-' + spacing + ' ')
@@ -89,6 +90,7 @@ const SpecQuestions = ({questions, layout, additionalClass, project, dirtyProjec
     case 'textinput':
       ChildElem = TCFormFields.TextInput
       elemProps.wrapperClass = ('row ' + spacing)
+      additionalItemClass = spacing
       // child = <TCFormFields.TextInput name={q.fieldName} label={q.label} value={value} wrapperClass="row" />
       break
     case 'numberinput':
@@ -172,6 +174,7 @@ const SpecQuestions = ({questions, layout, additionalClass, project, dirtyProjec
     }
     return (
       <SpecQuestionList.Item
+        additionalClass = {additionalItemClass}
         key={index}
         title={q.title}
         type={q.type}
