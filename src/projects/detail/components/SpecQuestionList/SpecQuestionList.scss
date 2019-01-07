@@ -27,8 +27,29 @@
       @include roboto;
       font-size: 12px;
       line-height: 20px;
-      color: #808080;
       font-style: italic;
+      color: #404041;
+    }
+
+    .spacing-gray-input {
+      width: 100px;
+
+      input {
+        background-color: #fafafb;
+        border: none;
+        border-bottom: 1px solid #959596;
+        color: #404041;
+        margin: 0;
+      
+        @include placeholder {
+          @include roboto;
+          color: $tc-gray-30;
+          text-transform: none;
+          font-style: italic;
+          font-size: $base-unit*3;
+          line-height: $base-unit*4;
+        }
+      }
     }
 
     .disabled-items-as-read-only {

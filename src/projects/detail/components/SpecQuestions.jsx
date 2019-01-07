@@ -121,6 +121,7 @@ const SpecQuestions = ({
       })
     }
 
+    let additionalItemClass = ''
     let spacing = _.get(q, 'spacing', '')
     if (spacing) {
       spacing = ('spacing-' + spacing + ' ')
@@ -139,6 +140,11 @@ const SpecQuestions = ({
     case 'textinput':
       ChildElem = TCFormFields.TextInput
       elemProps.wrapperClass = ('row ' + spacing)
+      if (spacing.includes('spacing-gray-input')) {
+        elemProps.placeholder = q.title
+      }
+      additionalItemClass = spacing
+      
       // child = <TCFormFields.TextInput name={q.fieldName} label={q.label} value={value} wrapperClass="row" />
       break
     case 'numberinput':
@@ -269,6 +275,7 @@ const SpecQuestions = ({
 
     return (
       <SpecQuestionList.Item
+        additionalClass = {additionalItemClass}
         key={q.fieldName}
         title={q.title}
         type={q.type}

@@ -43,6 +43,7 @@ const SpecQuestionListItem = ({
   icon,
   title,
   type,
+  additionalClass,
   titleAside,
   description,
   children,
@@ -53,55 +54,66 @@ const SpecQuestionListItem = ({
   stopEditReadOnly,
   cancelEditReadOnly,
   readOptimized,
-}) => (
-  <div className={ cn('spec-question-list-item', { 'read-optimized' : readOptimized }) }>
-    {icon && <div className="icon-col">{icon}</div>}
-    <div className="content-col">
-      {_.get(__wizard, 'readOnly') && (
-        <button
-          type="button"
-          className="spec-section-edit-button"
-          onClick={() => startEditReadOnly(_.get(__wizard, 'step'))}
-        >
-          <IconUIPencil />
-        </button>
-      )}
-      <h5>
-        <div>{title}{required ? <span>*</span> : null}</div>
-        {!!titleAside && <div className="spec-section-title-aside">{titleAside}</div>}
-      </h5>
-      {children && <div className="child-component">{children}</div>}
-      {!hideDescription && <p className={cn({bigger: !icon})}>{description}</p>}
-      {(type === 'textinput') &&
-      <div className="refcode-desc">{required ? 'Required' : 'Optional'}</div>}
-      {_.get(__wizard, 'editReadOnly') && (
-        <div className="spec-section-actions">
+}) => {
+  let shouldShowTitle = true
+  if (additionalClass.includes('spacing-gray-input') && (type === 'textinput')) {
+    shouldShowTitle = false
+  }
+  return (
+    <div className={ cn('spec-question-list-item', { 'read-optimized' : readOptimized }) }>
+      {icon && <div className="icon-col">{icon}</div>}
+      <div className="content-col">
+        {_.get(__wizard, 'readOnly') && (
           <button
             type="button"
-            className="tc-btn tc-btn-default tc-btn-md"
-            onClick={() => cancelEditReadOnly(_.get(__wizard, 'step'))}
+            className="spec-section-edit-button"
+            onClick={() => startEditReadOnly(_.get(__wizard, 'step'))}
           >
-            Cancel
+            <IconUIPencil />
           </button>
-          <button
-            type="button"
-            className="tc-btn tc-btn-primary tc-btn-md"
-            onClick={() => stopEditReadOnly(_.get(__wizard, 'step'))}
-          >
-            Update
-          </button>
-        </div>
-      )}
+        )}
+        {shouldShowTitle && (<h5>
+          <div>{title}{required ? <span>*</span> : null}</div>
+          {!!titleAside && <div className="spec-section-title-aside">{titleAside}</div>}
+        </h5>)}
+        {children && <div className="child-component">{children}</div>}
+        {!hideDescription && <p className={cn({bigger: !icon})}>{description}</p>}
+        {(type === 'textinput') &&
+        <div className="refcode-desc">{required ? 'Required' : 'Optional'}</div>}
+        {_.get(__wizard, 'editReadOnly') && (
+          <div className="spec-section-actions">
+            <button
+              type="button"
+              className="tc-btn tc-btn-default tc-btn-md"
+              onClick={() => cancelEditReadOnly(_.get(__wizard, 'step'))}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="tc-btn tc-btn-primary tc-btn-md"
+              onClick={() => stopEditReadOnly(_.get(__wizard, 'step'))}
+            >
+              Update
+            </button>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 SpecQuestionListItem.propTypes = {
   icon: PropTypes.any,
   title: PropTypes.any.isRequired,
   description: PropTypes.any,
   children: PropTypes.any,
-  type: PropTypes.string
+  type: PropTypes.string,
+  additionalClass: PropTypes.string
+}
+
+SpecQuestionListItem.defaultProps = {
+  additionalClass: '',
 }
 
 SpecQuestionList.Item = SpecQuestionListItem
