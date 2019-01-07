@@ -13,7 +13,7 @@ const SpecQuestionList = ({ children, layout, additionalClass }) => {
     }
   }
   return (
-    <div className={'spec-question-list buub ' + layoutClass + ' ' + additionalClass}>
+    <div className={'spec-question-list ' + layoutClass + ' ' + additionalClass}>
       { children }
     </div>
   )
