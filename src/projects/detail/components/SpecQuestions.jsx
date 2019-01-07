@@ -90,6 +90,9 @@ const SpecQuestions = ({questions, layout, additionalClass, project, dirtyProjec
     case 'textinput':
       ChildElem = TCFormFields.TextInput
       elemProps.wrapperClass = ('row ' + spacing)
+      if (spacing.includes('spacing-gray-input')) {
+        elemProps.placeholder = q.title
+      }
       additionalItemClass = spacing
       // child = <TCFormFields.TextInput name={q.fieldName} label={q.label} value={value} wrapperClass="row" />
       break

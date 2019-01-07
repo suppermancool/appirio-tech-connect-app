@@ -27,6 +27,27 @@
       font-style: italic;
     }
 
+    .spacing-gray-input {
+      width: 100px;
+
+      input {
+        background-color: #fafafb;
+        border: none;
+        border-bottom: 1px solid #959596;
+        color: #404041;
+        margin: 0;
+      
+        @include placeholder {
+          @include roboto;
+          color: $tc-gray-30;
+          text-transform: none;
+          font-style: italic;
+          font-size: $base-unit*3;
+          line-height: $base-unit*4;
+        }
+      }
+    }
+
     .icon-col {
       padding-top: 3px;
       padding-right: 10px;
