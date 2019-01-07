@@ -7,21 +7,42 @@ import IconUIPencil from '../../../../assets/icons/ui-pencil.svg'
 
 require('./SpecQuestionList.scss')
 
-const SpecQuestionList = ({ children }) => {
+const SpecQuestionList = ({ children, layout, additionalClass }) => {
+  let layoutClass = ''
+  if (layout) {
+    const direction = _.get(layout, 'direction', '')
+    if (direction) {
+      layoutClass += ('direction-' + direction + ' ')
+    }
+  }
   return (
-    <div className="spec-question-list">
+    <div className={'spec-question-list ' + layoutClass + ' ' + additionalClass}>
       { children }
     </div>
   )
 }
 
 SpecQuestionList.propTypes = {
-  children: PropTypes.any.isRequired
+  children: PropTypes.any.isRequired,
+  /**
+   * Layout of questions
+   */
+  layout: PropTypes.object,
+
+  /**
+   * additional class
+   */
+  additionalClass: PropTypes.string
+}
+
+SpecQuestionList.defaultProps = {
+  additionalClass: ''
 }
 
 const SpecQuestionListItem = ({
   icon,
   title,
+  type,
   titleAside,
   description,
   children,
@@ -51,6 +72,8 @@ const SpecQuestionListItem = ({
       </h5>
       {children && <div className="child-component">{children}</div>}
       {!hideDescription && <p className={cn({bigger: !icon})}>{description}</p>}
+      {(type === 'textinput') &&
+      <div className="refcode-desc">{required ? 'Required' : 'Optional'}</div>}
       {_.get(__wizard, 'editReadOnly') && (
         <div className="spec-section-actions">
           <button
@@ -77,7 +100,8 @@ SpecQuestionListItem.propTypes = {
   icon: PropTypes.any,
   title: PropTypes.any.isRequired,
   description: PropTypes.any,
-  children: PropTypes.any
+  children: PropTypes.any,
+  type: PropTypes.string
 }
 
 SpecQuestionList.Item = SpecQuestionListItem

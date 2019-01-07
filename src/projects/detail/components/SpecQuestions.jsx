@@ -44,6 +44,8 @@ const formatAddonOptions = options => options.map(o => ({
 // { isRequired, represents the overall questions section's compulsion, is also available}
 const SpecQuestions = ({
   questions,
+  layout,
+  additionalClass,
   project,
   dirtyProject,
   resetFeatures,
@@ -119,6 +121,11 @@ const SpecQuestions = ({
       })
     }
 
+    let spacing = _.get(q, 'spacing', '')
+    if (spacing) {
+      spacing = ('spacing-' + spacing + ' ')
+    }
+
     let ChildElem = ''
     switch (q.type) {
     case 'see-attached-textbox':
@@ -131,7 +138,7 @@ const SpecQuestions = ({
       break
     case 'textinput':
       ChildElem = TCFormFields.TextInput
-      elemProps.wrapperClass = 'row'
+      elemProps.wrapperClass = ('row ' + spacing)
       // child = <TCFormFields.TextInput name={q.fieldName} label={q.label} value={value} wrapperClass="row" />
       break
     case 'numberinput':
@@ -264,6 +271,7 @@ const SpecQuestions = ({
       <SpecQuestionList.Item
         key={q.fieldName}
         title={q.title}
+        type={q.type}
         // titleAside={titleAside}
         icon={getIcon(q.icon)}
         description={!isReadOnly ? q.description : null}
@@ -284,7 +292,7 @@ const SpecQuestions = ({
   }
 
   return (
-    <SpecQuestionList>
+    <SpecQuestionList layout={layout} additionalClass={additionalClass}>
       {questions.filter((question) =>
         // hide if we are in a wizard mode and question is hidden for now
         (!_.get(question, '__wizard.hidden')) &&
@@ -324,9 +332,18 @@ SpecQuestions.propTypes = {
    */
   showHidden: PropTypes.bool,
   /**
-   * contains the productTypes required for rendering add-on type questions
+   * Layout of questions
    */
-  productTemplates: PropTypes.array.isRequired,
+  layout: PropTypes.object,
+
+  /**
+   * additional class
+   */
+  additionalClass: PropTypes.string
+}
+
+SpecQuestions.defaultProps = {
+  additionalClass: '',
 }
 
 export default SpecQuestions
