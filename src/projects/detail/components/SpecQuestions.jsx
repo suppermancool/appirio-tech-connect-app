@@ -30,7 +30,7 @@ const getIcon = icon => {
 }
 
 // { isRequired, represents the overall questions section's compulsion, is also available}
-const SpecQuestions = ({questions, project, dirtyProject, resetFeatures, showFeaturesDialog, showHidden }) => {
+const SpecQuestions = ({questions, layout, additionalClass, project, dirtyProject, resetFeatures, showFeaturesDialog, showHidden }) => {
 
   const renderQ = (q, index) => {
     // let child = null
@@ -71,6 +71,11 @@ const SpecQuestions = ({questions, project, dirtyProject, resetFeatures, showFea
       })
     }
 
+    let spacing = _.get(q, 'spacing', '')
+    if (spacing) {
+      spacing = ('spacing-' + spacing + ' ')
+    }
+
     let ChildElem = ''
     switch (q.type) {
     case 'see-attached-textbox':
@@ -83,7 +88,7 @@ const SpecQuestions = ({questions, project, dirtyProject, resetFeatures, showFea
       break
     case 'textinput':
       ChildElem = TCFormFields.TextInput
-      elemProps.wrapperClass = 'row'
+      elemProps.wrapperClass = ('row ' + spacing)
       // child = <TCFormFields.TextInput name={q.fieldName} label={q.label} value={value} wrapperClass="row" />
       break
     case 'numberinput':
@@ -169,6 +174,7 @@ const SpecQuestions = ({questions, project, dirtyProject, resetFeatures, showFea
       <SpecQuestionList.Item
         key={index}
         title={q.title}
+        type={q.type}
         icon={getIcon(q.icon)}
         description={q.description}
         required={q.required || (q.validations && q.validations.indexOf('isRequired') !== -1)}
@@ -180,7 +186,7 @@ const SpecQuestions = ({questions, project, dirtyProject, resetFeatures, showFea
   }
 
   return (
-    <SpecQuestionList>
+    <SpecQuestionList layout={layout} additionalClass={additionalClass}>
       {questions.filter((question) => showHidden || !question.hidden).map(renderQ)}
     </SpecQuestionList>
   )
@@ -212,6 +218,19 @@ SpecQuestions.propTypes = {
    * If true, then `hidden` property of questions will be ignored and hidden questions will be rendered
    */
   showHidden: PropTypes.bool,
+  /**
+   * Layout of questions
+   */
+  layout: PropTypes.object,
+
+  /**
+   * additional class
+   */
+  additionalClass: PropTypes.string
+}
+
+SpecQuestions.defaultProps = {
+  additionalClass: '',
 }
 
 export default SpecQuestions

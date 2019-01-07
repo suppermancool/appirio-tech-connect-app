@@ -2,6 +2,13 @@
 
 :global {
   .spec-question-list {
+    &.direction-horizontal {
+      display: flex;
+      flex-direction: row;
+    }
+    &.direction-horizontal.space .spec-question-list-item {
+      margin-right: 10px;
+    }
   }
 
   .spec-question-list-item {
@@ -10,6 +17,14 @@
 
     @media screen and (max-width: $screen-md - 1px) {
       margin-top: 9 * $base-unit;
+    }
+
+    .refcode-desc {
+      @include roboto;
+      font-size: 12px;
+      line-height: 20px;
+      color: #808080;
+      font-style: italic;
     }
 
     .icon-col {
