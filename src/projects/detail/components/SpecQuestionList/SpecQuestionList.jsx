@@ -56,8 +56,10 @@ const SpecQuestionListItem = ({
   readOptimized,
 }) => {
   let shouldShowTitle = true
+  let shouldShowRequire = false
   if (additionalClass.includes('spacing-gray-input') && (type === 'textinput')) {
     shouldShowTitle = false
+    shouldShowRequire = true
   }
   return (
     <div className={ cn('spec-question-list-item', { 'read-optimized' : readOptimized }) }>
@@ -78,8 +80,8 @@ const SpecQuestionListItem = ({
         </h5>)}
         {children && <div className="child-component">{children}</div>}
         {!hideDescription && <p className={cn({bigger: !icon})}>{description}</p>}
-        {(type === 'textinput') &&
-        <div className="refcode-desc">{required ? 'Required' : 'Optional'}</div>}
+        {shouldShowRequire &&
+        <div className="require-desc">{required ? 'Required' : 'Optional'}</div>}
         {_.get(__wizard, 'editReadOnly') && (
           <div className="spec-section-actions">
             <button
