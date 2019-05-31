@@ -135,24 +135,20 @@ class DashboardContainer extends React.Component {
 
     const projectTemplate = _.find(projectTemplates, t => t.id === project.templateId)
     const projectTemplateScope = _.get(projectTemplate, 'scope', {})
-    const hasEstimation = true
-    let question
-    if (hasEstimation) {
-      _.forEach(_.get(projectTemplateScope, 'sections', []), (section) => {
-        const subSections = _.filter(_.get(section, 'subSections', []), {type: 'questions'})
-        _.forEach(subSections, (subSection) => {
-          const questionTmp = _.filter(_.get(subSection, 'questions', []), {type: 'estimation'})
-          if (questionTmp.length > 0) {
-            question = questionTmp[0]
-            return false
-          }
-        })
-        if (question) {
+    let estimateQuestion
+    _.forEach(_.filter(_.get(projectTemplateScope, 'sections', []), {id: 'summary-final'}), (section) => {
+      const subSections = _.filter(_.get(section, 'subSections', []), {type: 'questions'})
+      _.forEach(subSections, (subSection) => {
+        const questionTmp = _.filter(_.get(subSection, 'questions', []), {type: 'estimation'})
+        if (questionTmp.length > 0) {
+          estimateQuestion = questionTmp[0]
           return false
         }
       })
-    }
-
+      if (estimateQuestion) {
+        return false
+      }
+    })
 
     // system notifications
     const notReadNotifications = filterReadNotifications(notifications)
@@ -238,7 +234,7 @@ class DashboardContainer extends React.Component {
             </div>
           </Drawer>
 
-          {question && (<ProjectEstimation question={question} project={project} template={projectTemplateScope} hidePriceEstimate />)}
+          {estimateQuestion && (<ProjectEstimation question={estimateQuestion} project={project} template={projectTemplateScope} hidePriceEstimate />)}
 
           {activePhases.length > 0 &&
             <WorkInProgress
