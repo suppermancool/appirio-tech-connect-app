@@ -34,6 +34,7 @@ import { SCREEN_BREAKPOINT_MD } from '../../../config/constants'
 import TwoColsLayout from '../../../components/TwoColsLayout'
 import SystemFeed from '../../../components/Feed/SystemFeed'
 import WorkInProgress from '../components/WorkInProgress'
+import ProjectEstimation from '../../create/components/ProjectEstimation'
 import NotificationsReader from '../../../components/NotificationsReader'
 import { checkPermission } from '../../../helpers/permissions'
 import PERMISSIONS from '../../../config/permissions'
@@ -114,6 +115,7 @@ class DashboardContainer extends React.Component {
       isManageUser,
       notifications,
       productTemplates,
+      projectTemplates,
       isProcessing,
       updateProduct,
       fireProductDirty,
@@ -130,6 +132,27 @@ class DashboardContainer extends React.Component {
       expandProjectPhase,
       collapseProjectPhase,
     } = this.props
+
+    const projectTemplate = _.find(projectTemplates, t => t.id === project.templateId)
+    const projectTemplateScope = _.get(projectTemplate, 'scope', {})
+    const hasEstimation = true
+    let question
+    if (hasEstimation) {
+      _.forEach(_.get(projectTemplateScope, 'sections', []), (section) => {
+        const subSections = _.filter(_.get(section, 'subSections', []), {type: 'questions'})
+        _.forEach(subSections, (subSection) => {
+          const questionTmp = _.filter(_.get(subSection, 'questions', []), {type: 'estimation'})
+          if (questionTmp.length > 0) {
+            question = questionTmp[0]
+            return false
+          }
+        })
+        if (question) {
+          return false
+        }
+      })
+    }
+
 
     // system notifications
     const notReadNotifications = filterReadNotifications(notifications)
@@ -215,6 +238,8 @@ class DashboardContainer extends React.Component {
             </div>
           </Drawer>
 
+          {question && (<ProjectEstimation question={question} project={project} template={projectTemplateScope} hidePriceEstimate />)}
+
           {activePhases.length > 0 &&
             <WorkInProgress
               productTemplates={productTemplates}
@@ -258,6 +283,7 @@ const mapStateToProps = ({ notifications, projectState, projectTopics, templates
   return {
     notifications: preRenderNotifications(notifications.notifications),
     productTemplates: templates.productTemplates,
+    projectTemplates: templates.projectTemplates,
     isProcessing: projectState.processing,
     phases: projectState.phases,
     feeds: allFeed,

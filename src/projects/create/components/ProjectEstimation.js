@@ -11,7 +11,7 @@ import './ProjectEstimation.scss'
 
 const numberWithCommas = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-function ProjectEstimation({ question, project, template }) {
+function ProjectEstimation({ question, project, template, hidePriceEstimate }) {
   const isSelected = (item) => evaluate(item.enableCondition, flatten(project, { safe: true }))
   let totalDuration = 0//_.sumBy(question.deliverables, 'duration')
   const phasesEnabled = question.deliverables.filter(isSelected)
@@ -60,18 +60,20 @@ function ProjectEstimation({ question, project, template }) {
           return renderBlock({ ...item, duration: duration ? duration : null })
         })}
       </ul>
-      <h3>Our estimate is from <span>$</span>{numberWithCommas(priceEstimate)}</h3>
+      {!hidePriceEstimate && (<h3>Our estimate is from <span>$</span>{numberWithCommas(priceEstimate)}</h3>)}
     </div>
   )
 }
 
 ProjectEstimation.defaultProps = {
+  hidePriceEstimate: false,
 }
 
 ProjectEstimation.propTypes = {
   project: PT.object.isRequired,
   question: PT.object.isRequired,
   template: PT.object.isRequired,
+  hidePriceEstimate: PT.bool,
 }
 
 export default ProjectEstimation
