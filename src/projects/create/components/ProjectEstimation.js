@@ -18,7 +18,10 @@ function ProjectEstimation({ question, project, template }) {
   // const enabledDuration = _.sumBy(phasesEnabled, 'duration')
 
   const { priceEstimate, durationEstimate, estimateBlocks } = getProductEstimate({scope: template}, project)
-  // console.log(estimateBlocks)
+  if (!estimateBlocks || estimateBlocks.length === 0) {
+    // can not estimate prize
+    return null
+  }
   const deliverables = _.map(question.deliverables, item => {
     const buildingBlocks = _.filter(estimateBlocks, b => _.get(b, 'metadata.deliverable') === item.deliverableKey)
     if (buildingBlocks) {

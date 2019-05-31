@@ -57,6 +57,10 @@ class ProjectBasicDetailsForm extends Component {
       hasDependantFields,
     } = initWizard(props.template, props.project, props.productTemplates, incompleteWizard)
 
+    if (props.sectionIndex >= 0) {
+      currentWizardStep.sectionIndex = props.sectionIndex
+    }
+
     this.state = {
       template,
       nextWizardStep: getNextStepToShow(template, currentWizardStep),
@@ -146,6 +150,9 @@ class ProjectBasicDetailsForm extends Component {
   }
 
   submit(/* model */) {
+    if (!this.props.submitHandler) {
+      return
+    }
     // we cannot use `model` provided by Formzy because in the `previousStepVisibility==none` mode
     // some parts of the form are hidden, so Formzy thinks we don't have them
     // instead we use this.props.dirtyProject which contains the current project data
@@ -193,7 +200,7 @@ class ProjectBasicDetailsForm extends Component {
   }
 
   render() {
-    const { isEditable, submitBtnText, dirtyProject, productTemplates, productCategories } = this.props
+    const { isEditable, submitBtnText, dirtyProject, productTemplates, productCategories, sectionFooterStyle } = this.props
     const {
       project,
       canSubmit,
@@ -266,7 +273,7 @@ class ProjectBasicDetailsForm extends Component {
             (!_.get(section, '__wizard.hiddenByCondition'))
           )).map(renderSection)}
 
-          <div className="section-footer section-footer-spec">
+          <div style={sectionFooterStyle} className="section-footer section-footer-spec">
             {isWizardMode && (
               <button
                 className="tc-btn tc-btn-default tc-btn-md"
@@ -301,7 +308,9 @@ class ProjectBasicDetailsForm extends Component {
 }
 
 ProjectBasicDetailsForm.defaultProps = {
-  shouldUpdateTemplate: false
+  shouldUpdateTemplate: false,
+  sectionIndex: -1,
+  sectionFooterStyle: {}
 }
 
 ProjectBasicDetailsForm.propTypes = {
@@ -314,6 +323,8 @@ ProjectBasicDetailsForm.propTypes = {
   onStepChange: PropTypes.func.isRequired,
   productCategories: PropTypes.array.isRequired,
   shouldUpdateTemplate: PropTypes.bool,
+  sectionIndex: PropTypes.number,
+  sectionFooterStyle: PropTypes.object,
 }
 
 export default ProjectBasicDetailsForm
