@@ -268,14 +268,41 @@ class EditProjectForm extends Component {
 
 
   render() {
-    const { isEdittable, showHidden, productTemplates, productCategories } = this.props
+    const { isEdittable, showHidden, productTemplates, productCategories, onlyShowSummary } = this.props
     const { template } = this.state
     const { project, dirtyProject } = this.state
     const onLeaveMessage = this.onLeave() || ''
     const renderSection = (section, idx) => {
       const anySectionInvalid = _.some(template.sections, (s) => s.isInvalid)
+      const currentWizardStep = {
+        sectionIndex: idx,
+        subSectionIndex: 0,
+        questionIndex: 0,
+        optionIndex: 0,
+      }
+      let hide = false
+      let rightAreaItemStyle = {}
+      let containerStyle = {}
+      let footerStyle = {}
+      if (onlyShowSummary) {
+        hide = idx < (template.sections.length - 1)
+        rightAreaItemStyle = {
+          paddingTop: 0,
+          paddingBottom: 0,
+        }
+        containerStyle = {
+          boxShadow: 'none',
+          marginTop: '-100px'
+        }
+        if (hide) {
+          containerStyle.display = 'none'
+        }
+        footerStyle = {
+          marginTop: 0
+        }
+      }
       return (
-        <div key={idx}>
+        <div style={containerStyle} key={idx}>
           <SpecSection
             {...section}
             project={project}
@@ -295,8 +322,10 @@ class EditProjectForm extends Component {
             removeAttachment={this.props.removeAttachment}
             attachmentsStorePath={this.props.attachmentsStorePath}
             canManageAttachments={this.props.canManageAttachments}
+            currentWizardStep={currentWizardStep}
+            rightAreaItemStyle={rightAreaItemStyle}
           />
-          <div className="section-footer section-footer-spec">
+          <div style={footerStyle} className="section-footer section-footer-spec">
             <button className="tc-btn tc-btn-primary tc-btn-md"
               type="submit"
               disabled={(!this.isChanged() || this.state.isSaving) || anySectionInvalid || !this.state.canSubmit || this.makeDeliveredPhaseReadOnly(project.status)}
@@ -353,7 +382,8 @@ class EditProjectForm extends Component {
 }
 
 EditProjectForm.defaultProps = {
-  shouldUpdateTemplate: false
+  shouldUpdateTemplate: false,
+  onlyShowSummary: false
 }
 
 EditProjectForm.propTypes = {
@@ -371,6 +401,7 @@ EditProjectForm.propTypes = {
   updateAttachment: PropTypes.func.isRequired,
   removeAttachment: PropTypes.func.isRequired,
   shouldUpdateTemplate: PropTypes.bool,
+  onlyShowSummary: PropTypes.bool,
 }
 
 export default EditProjectForm

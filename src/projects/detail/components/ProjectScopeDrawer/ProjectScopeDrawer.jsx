@@ -68,40 +68,48 @@ class ProjectScopeDrawer extends Component {
       onRequestChange,
     } = this.props
 
-    const template = projectTemplate.scope
-    template.wizard = null
-    if (template.sections.length > 0) {
-      template.sections[template.sections.length - 1].nextButtonText = 'Save changes'
-    }
+    const template = _.cloneDeep(projectTemplate.scope)
+
     const editPriv = isSuperUser ? isSuperUser : !!currentMemberRole
     const attachmentsStorePath = `${PROJECT_ATTACHMENTS_FOLDER}/${project.id}/`
-    const projectTemplateScope = _.get(projectTemplate, 'scope', {})
-    let estimateQuestion
+    const projectTemplateScope = _.cloneDeep(_.get(projectTemplate, 'scope', {}))
+    let haveEstimateQuestion = false
     _.forEach(_.filter(_.get(projectTemplateScope, 'sections', []), {id: 'summary-final'}), (section) => {
       const subSections = _.filter(_.get(section, 'subSections', []), {type: 'questions'})
       _.forEach(subSections, (subSection) => {
         const questionTmp = _.filter(_.get(subSection, 'questions', []), {type: 'estimation'})
         if (questionTmp.length > 0) {
-          estimateQuestion = questionTmp[0]
+          haveEstimateQuestion = true
           return false
         }
       })
-      if (estimateQuestion) {
-        return false
-      }
+      if (haveEstimateQuestion) return false
     })
-    let ProjectEstimationElement
-    if (estimateQuestion) {
+    let canCalculateEstimate = false
+    if (haveEstimateQuestion) {
       const { estimateBlocks } = getProductEstimate({scope: projectTemplateScope}, project)
       // check if can estimate prize
       if (estimateBlocks && estimateBlocks.length > 0) {
-        ProjectEstimationElement = <ProjectEstimation question={estimateQuestion} project={project} template={projectTemplateScope} />
+        canCalculateEstimate = true
       }
     }
 
+    if (canCalculateEstimate && haveEstimateQuestion) {
+      template.wizard = null
+      if (template.sections.length > 0) {
+        const lastSection = template.sections[template.sections.length - 1]
+        lastSection.nextButtonText = 'Save changes'
+        _.forEach(template.sections, (section) => {
+          section.hiddenOnEdit = false
+        })
+        lastSection.subSections.shift()
+      }
+    }
+    
+
     return (
       <Drawer {...this.props}>
-        <Toolbar>
+        <Toolbar style={{position: 'relative', zIndex: 3}}>
           <ToolbarGroup>
             <ToolbarTitle text="Project Scope" />
           </ToolbarGroup>
@@ -111,47 +119,27 @@ class ProjectScopeDrawer extends Component {
             </span>
           </ToolbarGroup>
         </Toolbar>
-        <div styleName="drawer-content">
-          {(estimateQuestion && ProjectEstimationElement) ?
-            (
-              <div styleName="drawer-project-basic-details-form">
-                <EnhancedProjectBasicDetailsForm
-                  project={project}
-                  dirtyProject={project}
-                  template={template}
-                  sectionIndex={template.sections.length - 1}
-                  isEditable
-                  submitHandler={null}
-                  saving={processing}
-                  onProjectChange={() => {}}
-                  submitBtnText={ 'submitBtnText' }
-                  productTemplates={productTemplates}
-                  onStepChange={() => {}}
-                  productCategories={productCategories}
-                  shouldUpdateTemplate={false}
-                  sectionFooterStyle={{marginTop: 0}}
-                />
-              </div>)
-            :
-            (
-              <EnhancedEditProjectForm
-                project={project}
-                template={template}
-                isEdittable={editPriv}
-                submitHandler={this.saveProject}
-                saving={processing}
-                fireProjectDirty={fireProjectDirty}
-                fireProjectDirtyUndo= {fireProjectDirtyUndo}
-                addAttachment={this.addProjectAttachment}
-                updateAttachment={this.updateProjectAttachment}
-                removeAttachment={this.removeProjectAttachment}
-                attachmentsStorePath={attachmentsStorePath}
-                canManageAttachments={!!currentMemberRole}
-                productTemplates={productTemplates}
-                productCategories={productCategories}
-                showHidden
-              />
-            )}
+        <div style={{position: 'relative', zIndex: 2}} styleName="drawer-content">
+          {(
+            <EnhancedEditProjectForm
+              project={project}
+              template={template}
+              isEdittable={editPriv}
+              submitHandler={this.saveProject}
+              saving={processing}
+              fireProjectDirty={fireProjectDirty}
+              fireProjectDirtyUndo= {fireProjectDirtyUndo}
+              addAttachment={this.addProjectAttachment}
+              updateAttachment={this.updateProjectAttachment}
+              removeAttachment={this.removeProjectAttachment}
+              attachmentsStorePath={attachmentsStorePath}
+              canManageAttachments={!!currentMemberRole}
+              productTemplates={productTemplates}
+              productCategories={productCategories}
+              onlyShowSummary={canCalculateEstimate && haveEstimateQuestion}
+              showHidden
+            />
+          )}
         </div>
       </Drawer>
     )
