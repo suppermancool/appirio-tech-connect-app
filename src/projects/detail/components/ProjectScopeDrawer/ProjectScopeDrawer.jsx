@@ -15,7 +15,6 @@ import {
 } from '../../../../config/constants'
 import spinnerWhileLoading from '../../../../components/LoadingSpinner'
 import EditProjectForm from '../../components/EditProjectForm'
-import { getProductEstimate } from '../../../../config/projectWizard'
 import './ProjectScopeDrawer.scss'
 
 
@@ -82,16 +81,8 @@ class ProjectScopeDrawer extends Component {
       })
       if (haveEstimateQuestion) return false
     })
-    let canCalculateEstimate = false
-    if (haveEstimateQuestion) {
-      const { estimateBlocks } = getProductEstimate({scope: projectTemplateScope}, project)
-      // check if can estimate prize
-      if (estimateBlocks && estimateBlocks.length > 0) {
-        canCalculateEstimate = true
-      }
-    }
 
-    if (canCalculateEstimate && haveEstimateQuestion) {
+    if (haveEstimateQuestion) {
       template.wizard = null
       if (template.sections.length > 0) {
         const lastSection = template.sections[template.sections.length - 1]
@@ -133,7 +124,7 @@ class ProjectScopeDrawer extends Component {
               canManageAttachments={!!currentMemberRole}
               productTemplates={productTemplates}
               productCategories={productCategories}
-              onlyShowSummary={canCalculateEstimate && haveEstimateQuestion}
+              onlyShowSummary={haveEstimateQuestion}
               showHidden
             />
           )}
