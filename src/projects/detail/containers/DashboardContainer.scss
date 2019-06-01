@@ -1,7 +1,15 @@
+@import '../../../styles/includes';
+
 .close-btn {
   cursor: pointer;
 }
 
 .drawer-content {
   padding: 5px 10px;
+}
+
+.project-estimation-contenter {
+  background: $tc-white;
+  border-radius: $card-border-radius;
+  padding: $base-unit * 4;
 }

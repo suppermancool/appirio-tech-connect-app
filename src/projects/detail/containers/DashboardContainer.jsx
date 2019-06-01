@@ -234,7 +234,17 @@ class DashboardContainer extends React.Component {
             </div>
           </Drawer>
 
-          {estimateQuestion && (<ProjectEstimation question={estimateQuestion} project={project} template={projectTemplateScope} hidePriceEstimate />)}
+          {estimateQuestion && (
+            <div styleName="project-estimation-contenter">
+              <ProjectEstimation
+                question={estimateQuestion}
+                project={project}
+                template={projectTemplateScope}
+                titleStyles={{fontSize: '16px', fontWeight: '700', lineHeight: '30px', margin: '0 0 0 -10px'}}
+                hidePriceEstimate
+              />
+            </div>
+          )}
 
           {activePhases.length > 0 &&
             <WorkInProgress
