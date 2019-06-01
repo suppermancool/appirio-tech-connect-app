@@ -15,8 +15,6 @@ import {
 } from '../../../../config/constants'
 import spinnerWhileLoading from '../../../../components/LoadingSpinner'
 import EditProjectForm from '../../components/EditProjectForm'
-import ProjectEstimation from '../../../create/components/ProjectEstimation'
-import ProjectBasicDetailsForm from '../../../create/components/ProjectBasicDetailsForm'
 import { getProductEstimate } from '../../../../config/projectWizard'
 import './ProjectScopeDrawer.scss'
 
@@ -24,7 +22,6 @@ import './ProjectScopeDrawer.scss'
 // This handles showing a spinner while the state is being loaded async
 const enhance = spinnerWhileLoading(props => !props.processing)
 const EnhancedEditProjectForm = enhance(EditProjectForm)
-const EnhancedProjectBasicDetailsForm = enhance(ProjectBasicDetailsForm)
 
 class ProjectScopeDrawer extends Component {
   constructor(props) {
