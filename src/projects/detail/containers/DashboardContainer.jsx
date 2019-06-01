@@ -38,6 +38,7 @@ import ProjectEstimation from '../../create/components/ProjectEstimation'
 import NotificationsReader from '../../../components/NotificationsReader'
 import { checkPermission } from '../../../helpers/permissions'
 import PERMISSIONS from '../../../config/permissions'
+import { getProductEstimate } from '../../../config/projectWizard'
 
 import {
   PHASE_STATUS_ACTIVE,
@@ -149,6 +150,11 @@ class DashboardContainer extends React.Component {
         return false
       }
     })
+    
+    const { estimateBlocks } = getProductEstimate({scope: projectTemplateScope}, project)
+    if (!estimateBlocks || estimateBlocks.length === 0) {
+      estimateQuestion = null
+    }
 
     // system notifications
     const notReadNotifications = filterReadNotifications(notifications)
@@ -235,7 +241,7 @@ class DashboardContainer extends React.Component {
           </Drawer>
 
           {estimateQuestion && (
-            <div styleName="project-estimation-contenter">
+            <div styleName="project-estimation-container">
               <ProjectEstimation
                 question={estimateQuestion}
                 project={project}
