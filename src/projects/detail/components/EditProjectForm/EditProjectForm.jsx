@@ -270,7 +270,8 @@ class EditProjectForm extends Component {
   render() {
     const { isEdittable, showHidden, productTemplates, productCategories, onlyShowSummary } = this.props
     const { template } = this.state
-    const { project, dirtyProject } = this.state
+    const { project } = this.state
+    let { dirtyProject } = this.state
     const onLeaveMessage = this.onLeave() || ''
     const renderSection = (section, idx) => {
       const anySectionInvalid = _.some(template.sections, (s) => s.isInvalid)
@@ -286,6 +287,11 @@ class EditProjectForm extends Component {
       let footerStyle = {}
       if (onlyShowSummary) {
         hide = idx < (template.sections.length - 1)
+        if (!hide) {
+          dirtyProject = project
+        } else {
+          return null
+        }
         rightAreaItemStyle = {
           paddingTop: 0,
           paddingBottom: 0,
