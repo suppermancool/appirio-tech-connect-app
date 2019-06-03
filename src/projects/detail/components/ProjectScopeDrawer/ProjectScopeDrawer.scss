@@ -3,7 +3,9 @@
 }
 
 .drawer-content {
-  padding: 5px 0;
+  padding: 5px 50px;
+  position: relative;
+  z-index: 2;
 }
 
 .drawer-project-basic-details-form {

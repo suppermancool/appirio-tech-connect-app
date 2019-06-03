@@ -91,7 +91,6 @@ const SpecSection = props => {
     canManageAttachments,
     productTemplates,
     productCategories,
-    rightAreaItemStyle,
   } = props
 
   const subSections = props.subSections
@@ -369,7 +368,7 @@ const SpecSection = props => {
             dirtyProject,
             currentWizardStep,
             productTemplates,
-            productCategories
+            productCategories,
           }}
         />
       )
@@ -384,7 +383,7 @@ const SpecSection = props => {
   }
 
   return (
-    <div className="right-area-item" style={rightAreaItemStyle} id={id}>
+    <div className="right-area-item" id={id}>
       <div className="boxes">
         {!project.version === 'v3' &&
         <div className="section-header big-titles">
@@ -416,13 +415,11 @@ const SpecSection = props => {
 }
 
 SpecSection.defaultProps = {
-  rightAreaItemStyle: {},
 }
 
 SpecSection.propTypes = {
   project: PropTypes.object.isRequired,
   template: PropTypes.object.isRequired,
-  rightAreaItemStyle: PropTypes.object,
   productTemplates: PropTypes.array.isRequired,
   sectionNumber: PropTypes.number.isRequired,
   showHidden: PropTypes.bool,

@@ -70,17 +70,7 @@ class ProjectScopeDrawer extends Component {
     const attachmentsStorePath = `${PROJECT_ATTACHMENTS_FOLDER}/${project.id}/`
     const projectTemplateScope = _.cloneDeep(_.get(projectTemplate, 'scope', {}))
     let haveEstimateQuestion = false
-    _.forEach(_.filter(_.get(projectTemplateScope, 'sections', []), {id: 'summary-final'}), (section) => {
-      const subSections = _.filter(_.get(section, 'subSections', []), {type: 'questions'})
-      _.forEach(subSections, (subSection) => {
-        const questionTmp = _.filter(_.get(subSection, 'questions', []), {type: 'estimation'})
-        if (questionTmp.length > 0) {
-          haveEstimateQuestion = true
-          return false
-        }
-      })
-      if (haveEstimateQuestion) return false
-    })
+    haveEstimateQuestion = _.filter(_.get(projectTemplateScope, 'sections', []), {id: 'summary-final'}).length > 0
 
     if (haveEstimateQuestion) {
       template.wizard = null
@@ -107,9 +97,10 @@ class ProjectScopeDrawer extends Component {
             </span>
           </ToolbarGroup>
         </Toolbar>
-        <div style={{position: 'relative', zIndex: 2}} styleName="drawer-content">
+        <div styleName="drawer-content">
           {(
             <EnhancedEditProjectForm
+              isInsideDrawer
               project={project}
               template={template}
               isEdittable={editPriv}
